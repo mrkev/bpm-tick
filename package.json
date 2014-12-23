@@ -2,7 +2,7 @@
   "name": "bpm-tick",
   "version": "0.0.0",
   "description": "A metronome for rhythmic callbacsk",
-  "main": "index.coffee",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/mrkev/beat.git"
@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/mrkev/beat/issues"
   },
-  "homepage": "https://github.com/mrkev/beat"
+  "homepage": "https://github.com/mrkev/beat",
+  "dependencies": {
+    "coffee-script": "^1.8.0"
+  }
 }
