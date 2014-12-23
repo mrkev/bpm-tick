@@ -60,15 +60,17 @@ class Tempo
       log = Array(10 - log.length).join(' ') + log unless log.length >= 10
       log = log + Array(@resolution).join(' 0')
 
+    @callbacks[@resolution](@ticker % 4) if @callbacks[@resolution]
     n = 1
     while (@ticker / Math.pow(4, n)) >> 0 > 0
       pow = Math.pow(4, n)
       if @ticker % pow is 0
-        @callbacks[n + @resolution]() if @callbacks[n + @resolution]
+        @callbacks[n + @resolution]((((@ticker / pow) >> 0) % 4)) if @callbacks[n + @resolution]
       
       log = log + " " + (((@ticker / pow) >> 0) % 4) if @devlog
       
       n++
+
     console.log log if @devlog
     return
 
@@ -77,32 +79,40 @@ class Tempo
 
   register: (event, callback) ->
     index = switch event
-      when "sub",   "1/64" , "0" then 0
-      when "div",   "1/16" , "1" then 1
-      when "beat",  "1/4"  , "2" then 2
-      when "bar",   "1"    , "3" then 3
-      when "word",  "4"          then 4
-      when "verse", "16"   , "5" then 5
-      when "song",  "64"   , "6" then 6
+      when          "sub",   "1/64" , "0" then 0
+      when          "div",   "1/16" , "1" then 1
+      when "black", "beat",  "1/4"  , "2" then 2
+      when "whole", "bar",   "1"    , "3" then 3
+      when "longa", "word",  "4"          then 4
+      when          "verse", "16"   , "5" then 5
+      when          "song",  "64"   , "6" then 6
       else false
 
     return this unless index
     @callbacks[index] = callback
     return this
 
-module.exports = Tempo
+  on: (e, c) -> @register e, c
+
+module.exports = (bpm, resolution) -> new Tempo(bpm, resolution)
+
 
 #
 # Test
 if require.main is module
-  b = new Tempo(128, 1)
-  b.devlog = true
-  s = null
-  b.register('beat', () ->
-    console.log "bam"
+  b = new Tempo(130)
+  b.on('beat', (x) ->
+    switch x
+      when 0 then return
+      when 2 then console.log ".|"
+      else console.log "....|"
   )
   
-  b.register('bar', () -> console.log "badambam")
+  b.on('bar', (x) ->
+    console.log switch x
+      when 0 then "-|"
+      else "..|"
+  )
   
   b.play()
   
