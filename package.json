@@ -1,7 +1,7 @@
 {
   "name": "bpm-tick",
   "version": "0.0.0",
-  "description": "A metronome for rhythmic callbacsk",
+  "description": "A metronome for rhythmic callbacks",
   "main": "index.js",
   "repository": {
     "type": "git",
