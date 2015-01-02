@@ -1,9 +1,9 @@
 ## How to use it
 
-    var beat = requrie("beat-tick");
-    var b = beat(128);
-    b.register('beat', function (x) { console.log "bam" });
-    b.register('bar' , function (x) { console.log "badam" });
+    var Tick = requrie("bpm-tick");
+    var b = new Tick(128);
+    b.register('beat', function (x) { console.log("bam");   });
+    b.register('bar' , function (x) { console.log("badam"); });
     b.play();
 
 It uses `Date` so it shouldn't drift (aka. it won't fall out of tempo). It's not
